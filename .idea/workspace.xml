@@ -10690,7 +10690,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/fsfaysalcse/CSN.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/fsfaysalcse/csntu.git&quot;,
     &quot;accountId&quot;: &quot;ea22551f-c425-4481-a0d7-05c2f83c57f2&quot;
   }
 }</component>
@@ -10705,19 +10705,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/fsfaysalcse/Desktop/CSN/app/static/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fsfaysalcse/Desktop/CSN/app/static/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/static/images" />
@@ -10769,7 +10769,7 @@
       <updated>1717839164040</updated>
       <workItem from="1717839165349" duration="35000" />
       <workItem from="1717839207099" duration="1863000" />
-      <workItem from="1717841293990" duration="25075000" />
+      <workItem from="1717841293990" duration="25731000" />
     </task>
     <task id="LOCAL-00001" summary="Update student ai code">
       <option name="closed" value="true" />

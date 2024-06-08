@@ -1,35 +1,76 @@
-/
-http://127.0.0.1:8000/
 
-/users/create
-http://127.0.0.1:8000/users/create
-
-/users/
-http://127.0.0.1:8000/users/
-
-/filter-users/
-http://127.0.0.1:8000/users/?role=1
+# CSN - CMS
 
 
-/modules/create
-http://127.0.0.1:8000/modules/create
+# Setup Instructions
 
-/modules/
-http://127.0.0.1:8000/modules/
+## 1. Install Python
 
-/filter moduel by lecturer_id
-http://127.0.0.1:8000/modules/?lecturer_id=1
+Make sure you have Python installed. You can download it from the official Python website: [Python Downloads](https://www.python.org/downloads/)
 
-/filter moduel by module_code
-http://127.0.0.1:8000/modules/?module_code=CS101
+## 2. Setup Environment
 
-/assignments/assign
-http://127.0.0.1:8000/assignments/assign
+Create a virtual environment and activate it.
 
-/assignments/
-http://127.0.0.1:8000/assignments/
+```bash
+# Create a virtual environment
+python -m venv env
 
-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
+# Activate the virtual environment
+# On Windows
+.\env\Scripts\activate
+# On macOS/Linux
+source env/bin/activate
+```
 
+## 3. Install Packages
 
-// http://127.0.0.1:5000/student?id=2
+Install the required packages from `requirements.txt`.
+
+```bash
+# Make sure you're in the project directory
+pip install -r requirements.txt
+```
+
+## 4. Create Database
+
+Create a MySQL database. Open your MySQL command line or use a GUI tool and run the following command:
+
+```sql
+CREATE DATABASE csndb;
+```
+
+Update your `app/__init__.py` file with the correct database credentials.
+
+```python
+# app/__init__.py
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/csndb'
+```
+
+Replace `root` and `password` with your MySQL username and password.
+
+## 5. Run Migrations
+
+Initialize and run the migrations to create the database tables.
+
+```bash
+# Initialize the migrations folder
+flask db init
+
+# Generate the migration scripts
+flask db migrate -m "Initial migration."
+
+# Apply the migrations to the database
+flask db upgrade
+```
+
+## 6. Run the Application
+
+Start the Flask application.
+
+```bash
+# Run the Flask app
+flask run
+```
+
+Open your browser and navigate to `http://127.0.0.1:5000/` to see the application running.
