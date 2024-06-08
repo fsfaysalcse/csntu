@@ -1,0 +1,26 @@
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+         <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+    </a>
+</nav>
+<div class="wrapper">
+    <div class="sidebar bg-light">
+        <div class="list-group list-group-flush">
+            <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action {% if request.endpoint == 'user_views.list_users' %}active{% endif %}">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-book"></i> Modules
+            </a>
+            <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-tasks"></i> Assignments
+            </a>
+            <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-list"></i> Tasks
+            </a>
+        </div>
+    </div>
+    <div class="content">

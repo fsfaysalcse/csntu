@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            padding-left: 20px;
+        }
+        .list-group-item-action.active {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+        .list-group-item-action:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+             <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+        </a>
+    </nav>
+    <div class="wrapper">
+        <div class="sidebar bg-light">
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-book"></i> Modules
+                </a>
+                <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tasks"></i> Assignments
+                </a>
+                <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-list"></i> Tasks
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            <h2 class="my-4">Student Task Marks</h2>
+            <canvas id="taskMarksChart"></canvas>
+            <div class="mt-4">
+                <h4>Statistics</h4>
+                <p>Total Tasks: <span id="totalTasks">0</span></p>
+                <p>Average Marks: <span id="averageMarks">0</span></p>
+                <p>Highest Marks: <span id="highestMarks">0</span></p>
+                <p>Lowest Marks: <span id="lowestMarks">0</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/task-marks-data')
+                .then(response => response.json())
+                .then(data => {
+                    var ctx = document.getElementById('taskMarksChart').getContext('2d');
+                    var taskMarksChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Task Marks',
+                                data: data.marks,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    document.getElementById('totalTasks').textContent = data.marks.length;
+                    document.getElementById('averageMarks').textContent = (data.marks.reduce((a, b) => a + b, 0) / data.marks.length).toFixed(2);
+                    document.getElementById('highestMarks').textContent = Math.max(...data.marks);
+                    document.getElementById('lowestMarks').textContent = Math.min(...data.marks);
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Assignment</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+             <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+        </a>
+    </nav>
+    <div class="wrapper">
+        <div class="sidebar bg-light">
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-book"></i> Modules
+                </a>
+                <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-tasks"></i> Assignments
+                </a>
+                <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-list"></i> Tasks
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            <h1>Edit Assignment</h1>
+            <form method="post" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="lecturer_id">Lecturer:</label>
+                    <select class="form-control" id="lecturer_id" name="lecturer_id" required>
+                        {% for lecturer in lecturers %}
+                            <option value="{{ lecturer.id }}" {% if lecturer.id == assignment.lecturer_id %}selected{% endif %}>{{ lecturer.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a lecturer.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="module_id">Module:</label>
+                    <select class="form-control" id="module_id" name="module_id" required>
+                        {% for module in modules %}
+                            <option value="{{ module.id }}" {% if module.id == assignment.module_id %}selected{% endif %}>{{ module.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a module.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>

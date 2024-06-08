@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"/>
+
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            padding-left: 20px;
+        }
+
+        .list-group-item-action.active {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .list-group-item-action:hover {
+            color: #007bff;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .grid-item {
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .grid-item p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('main_views.index') }}">
+         <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+    </a>
+</nav>
+<div class="wrapper">
+    <div class="sidebar bg-light">
+        <div class="list-group list-group-flush">
+            <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-book"></i> Modules
+            </a>
+            <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-tasks"></i> Assignments
+            </a>
+            <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-list"></i> Tasks
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <h2 class="my-4">Module Performance</h2>
+        <div class="grid-container" id="modulePerformanceGrid"></div>
+        
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const gradients = [
+            'linear-gradient(45deg, #6a11cb 0%, #2575fc 100%)',
+            'linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)',
+            'linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%)',
+            'linear-gradient(45deg, #fad0c4 0%, #ffd1ff 100%)',
+            'linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%)',
+            'linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%)',
+            'linear-gradient(45deg, #d4fc79 0%, #96e6a1 100%)',
+            'linear-gradient(45deg, #84fab0 0%, #8fd3f4 100%)'
+        ];
+
+        fetch('/module-performance-data')
+            .then(response => response.json())
+            .then(data => {
+                const gridContainer = document.getElementById('modulePerformanceGrid');
+                data.forEach((module, index) => {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+                    gridItem.style.background = gradients[index % gradients.length];
+                    gridItem.innerHTML = `
+                            <h3>${module.module_name}</h3>
+                            <p>Lecturer: ${module.lecturer_name}</p>
+                            <p>Total Students: ${module.total_students}</p>
+                            <p>Average Marks: ${module.average_marks.toFixed(2)}</p>
+                            <p>Passing Rate: ${module.passing_rate.toFixed(2)}%</p>
+                            <p>Failing Rate: ${module.failing_rate.toFixed(2)}%</p>
+                        `;
+                    gridContainer.appendChild(gridItem);
+                });
+            });
+    });
+</script>
+</body>
+</html>

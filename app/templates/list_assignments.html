@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Assignments</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+             <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+        </a>
+    </nav>
+    <div class="wrapper">
+        <div class="sidebar bg-light">
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-book"></i> Modules
+                </a>
+                <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-tasks"></i> Assignments
+                </a>
+                <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-list"></i> Tasks
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>List Assignments</h1>
+                <form class="form-inline" method="GET" action="{{ url_for('assignment_views.list_assignments') }}">
+                    <div class="input-group mr-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="lecturer_id">Teacher</label>
+                        </div>
+                        <select class="custom-select" id="lecturer_id" name="lecturer_id">
+                            <option value="">All</option>
+                            {% for lecturer in lecturers %}
+                                <option value="{{ lecturer.id }}" {% if request.args.get('lecturer_id') == lecturer.id %}selected{% endif %}>{{ lecturer.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                    <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">Search</button>
+                    <a href="{{ url_for('assignment_views.assign_module') }}" class="btn btn-primary my-2 my-sm-0">
+                        <i class="fas fa-plus"></i> Assign Module
+                    </a>
+                </form>
+            </div>
+            <table class="table table-striped mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Lecturer ID</th>
+                        <th>Lecturer Name</th>
+                        <th>Module ID</th>
+                        <th>Module Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td>{{ assignment.lecturer_id }}</td>
+                        <td>{{ assignment.lecturer.name }}</td>
+                        <td>{{ assignment.module_id }}</td>
+                        <td>{{ assignment.module.name }}</td>
+                        <td>
+                            <a href="{{ url_for('assignment_views.edit_assignment', assignment_id=assignment.id) }}" class="btn btn-sm btn-warning mr-2">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form action="{{ url_for('assignment_views.delete_assignment', assignment_id=assignment.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

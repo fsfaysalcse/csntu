@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Users</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            padding-left: 20px;
+        }
+        .list-group-item-action.active {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+        .list-group-item-action:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('main_views.index') }}">
+             <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Home Icon" style="width: 24px; height: 24px; vertical-align: middle;"> CMS
+        </a>
+        <div class="ml-auto">
+            <a href="{{ url_for('user_views.create_user') }}" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Create User
+            </a>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="sidebar bg-light">
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('main_views.index') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('user_views.list_users') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="{{ url_for('module_views.list_modules') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-book"></i> Modules
+                </a>
+                <a href="{{ url_for('assignment_views.list_assignments') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tasks"></i> Assignments
+                </a>
+                <a href="{{ url_for('task_views.list_tasks') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-list"></i> Tasks
+                </a>
+            </div>
+        </div>
+        <div class="content">
+            <h1>List Users</h1>
+            <form class="form-inline mb-3">
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" placeholder="Search" name="search" value="{{ request.args.get('search', '') }}">
+                </div>
+                <div class="form-group mr-2">
+                    <select class="form-control" name="role">
+                        <option value="">All Roles</option>
+                        <option value="1" {% if request.args.get('role') == '1' %}selected{% endif %}>Student</option>
+                        <option value="2" {% if request.args.get('role') == '2' %}selected{% endif %}>Teacher</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ 'Student' if user.role == 1 else 'Teacher' }}</td>
+                        <td>
+                            <a href="{{ url_for('user_views.edit_user', user_id=user.id) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form action="{{ url_for('user_views.delete_user', user_id=user.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
